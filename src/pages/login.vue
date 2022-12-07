@@ -37,16 +37,18 @@
 
 
 <script setup>
-import { login, getinfo } from '~/api/manager'
-import { reactive, ref } from "vue";
+import { reactive, ref, onMounted,onBeforeUnmount } from "vue";
 import { User, Lock } from '@element-plus/icons-vue'
 import { min } from "lodash";
-import { ElNotification } from 'element-plus'
+import {useStore} from 'vuex';
 import { useRouter } from 'vue-router';
-import { useCookies } from '@vueuse/integrations/useCookies'
+
+import { toast } from "~/common/util";
+
 
 
 const router = useRouter()
+const store = useStore()
 
 // do not use same name with ref
 const form = reactive({
@@ -75,30 +77,45 @@ const onSubmit = () => {
         }
 
         loading.value = true
-        login(form.username, form.password).then(res => {
-            ElNotification({
-                message: '登录成功',
-                type: 'success',
-                duration: 2000
-            })
-            //设置cookie
-            const cookie = useCookies()
-            cookie.set("admin-cookie", res.token)
-
-            //请求成功后获取用户相关信息
-            getinfo().then(res2 => {
-                console.log(res2);
-            })
-
-
-            //请求成功后跳转
+        store.dispatch('login',form).then(res=>{
+            toast('登录成功')
             router.push("/")
         }).finally(() => {
                 loading.value = false
         })
+        // login(form.username, form.password).then(res => {
+        //     toast('登录成功')
+           
+
+
+        //     //请求成功后跳转
+        //     router.push("/")
+        // }).finally(() => {
+        //         loading.value = false
+        // })
     })
 
-};
+}
+
+
+//监听回车事件
+function onKeyUp(e){
+    //console.log(e);
+    if(e.key=='Enter'){
+        onSubmit()
+    }
+
+}
+
+
+//添加键盘监听
+onMounted(()=>{
+    document.addEventListener('keyup',onKeyUp)
+})
+onBeforeUnmount(()=>{
+    document.removeEventListener('keyup',onKeyUp)
+})
+
 </script>
 
 <style>

@@ -13,3 +13,9 @@ export function login(username,password){
 export function getinfo(){
     return axios.post("/admin/getinfo")
 }
+
+//退出登录
+
+export function logout(){
+    return axios.post("/admin/logout")
+}

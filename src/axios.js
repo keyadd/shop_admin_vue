@@ -30,9 +30,14 @@ service.interceptors.response.use(function (response) {
     // 对响应数据做点什么
     return response.data.data;
   }, function (error) {
+    const msg = error.response.data.msg || "请求失败"
     // 对响应错误做点什么
-    console.log(error)
-    toast('error.response.data.msg || "请求失败"',error)
+    if(msg == "非法token，请先登录！"){
+      state.dispatch('logout').finally(()=>location.reload())
+
+    }
+   // console.log(error)
+    toast(msg,error)
 
     return Promise.reject(error);
  })

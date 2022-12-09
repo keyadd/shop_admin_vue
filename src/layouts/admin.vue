@@ -4,7 +4,7 @@
             <a-header/>
         </el-header>
         <el-container>
-            <el-aside width="">
+            <el-aside :width="$store.state.asideWidth">
                 <a-menu/>
             </el-aside>
             <el-main>
@@ -21,3 +21,8 @@ import AHeader from '~/layouts/components/AHeader.vue'
 import AMenu from '~/layouts/components/AMenu.vue'
 import ATagList from '~/layouts/components/ATagList.vue'
 </script>
+<style>
+.el-aside{
+    transition: all 0.2s;
+}
+</style>

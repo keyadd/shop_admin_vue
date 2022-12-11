@@ -7,6 +7,7 @@ import store from "~/store"
 
 //全局前置拦截
 
+let hasGetInfo = false
 router.beforeEach(async (to, from, next) => {
     //console.log('全局前置拦截');
     //显示loading
@@ -28,9 +29,10 @@ router.beforeEach(async (to, from, next) => {
     //如果用户登录成功 自动获取用户信息 存储到vuex
 
     let hasNewRouters =false
-    if(token){
+    if(token&& !hasGetInfo){
         let {menus} = await store.dispatch('getinfo')
         //console.log(menus)
+        hasGetInfo =true
 
         //动态添加路由
         hasNewRouters = addRoutes(menus)

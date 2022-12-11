@@ -125,6 +125,7 @@ function handleRefresh() {
 
     @apply flex bg-sky-500 text-light-50 fixed top-0 right-0 left-0;
     height: 64px;
+    z-index: 1000;
 
 }
 

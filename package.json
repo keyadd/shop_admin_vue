@@ -15,6 +15,7 @@
     "echarts": "^5.4.1",
     "element-plus": "^2.2.25",
     "gsap": "^3.11.3",
+    "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
     "universal-cookie": "^4.0.4",
     "vue": "^3.2.41",

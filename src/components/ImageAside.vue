@@ -53,7 +53,7 @@ function getData(p=null){
         currentPage.value = p
     }
     
-    console.log(p);
+    //console.log(p);
     loading.value =true
     getImageClassList(currentPage.value).then(res=>{
         total.value= res.totalCount

@@ -41,7 +41,7 @@ const uploadSuccess=(response, uploadFile, uploadFiles)=>{
 }
 const uploadError=(error, uploadFile, uploadFiles)=>{
    //console.log(error.message);
-   let msg = JSON.parse(error.message).msg ||'上传失败'
+   let msg = JSON.parse(error.message).msg ||"上传失败"
    toast(msg,"error")
     
 }

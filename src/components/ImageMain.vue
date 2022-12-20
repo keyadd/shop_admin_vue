@@ -4,11 +4,14 @@
 
             <el-row :gutter="20">
                 <el-col v-for="(item, index) in list" :key="index" :span="6" :offset="0">
-                    <el-card shadow="hover" class="relative" :body-style="{ 'padding': 0 }">
+                    <el-card shadow="hover" class="relative" :body-style="{ 'padding': 0 }" :class="{'border-blue-500':item.checked}">
                         <el-image :src="item.url" fit="cover" class="w-full h-[150px]" :preview-src-list="[item.url]"
                             :initial-index="0"></el-image>
                         <div class="image-title">{{ item.name }}</div>
                         <div class="flex items-center justify-center p-2">
+                            <el-checkbox v-if="openChoose" v-model="item.checked" @change="handleChooseChange(item)"></el-checkbox>
+                            
+
                             <el-button type="primary" size="small" text @click="handleEdit(item)">重命名</el-button>
                             <el-popconfirm title="是否要删除该图片" confirm-button-text="确认" cancel-button-text="取消"
                                 @confirm="handleDelete(item.id)">
@@ -76,7 +79,10 @@ function getData(p = null) {
     loading.value = true
     getImageList(image_class_id.value, currentPage.value).then(res => {
         total.value = res.totalCount
-        list.value = res.list
+        list.value = res.list.map(o=>{
+            o.checked =false
+            return o
+        })
         //console.log(list.value);
     }).finally(() => {
         loading.value = false
@@ -123,6 +129,28 @@ const handleDelete=(id) =>{
 
 //上传成功
 const handleUploadSuccess =()=>getData(1)
+
+
+//选中的图片
+const emit =defineEmits(['choose'])
+
+const checkedImage= computed(()=>list.value.filter(o=>o.checked))
+
+const handleChooseChange=(item)=>{
+    if(item.checked && checkedImage.value.length >1){
+        item.checked =false
+        return toast('最多只能选中一张','error')
+    }
+    emit('choose',checkedImage.value)
+}
+
+
+defineProps({
+    openChoose:{
+        type:Boolean,
+        default:false
+    }
+})
 
 
 defineExpose({

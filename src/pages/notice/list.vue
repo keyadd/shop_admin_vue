@@ -1,16 +1,7 @@
 <template>
   <el-card shadow="never" class="border-0">
     <!-- 新增 刷新 -->
-    <div class="flex items-center justify-between mb-4">
-      <el-button type="primary" size="small" @click="handleCreate">新增</el-button>
-      <el-tooltip class="box-item" effect="dark" content="刷新" placement="top-start">
-        <el-button text @click="getData">
-          <el-icon size="20">
-            <Refresh />
-          </el-icon>
-        </el-button>
-      </el-tooltip>
-    </div>
+    <ListHeader @create="handleCreate" @refresh="getData"></ListHeader>
     <el-table :data="tableData" stripe style="width: 100%" v-loading="loading">
       <el-table-column prop="title" label="公告标题" />
       <el-table-column prop="create_time" label="发布时间" width="380" />
@@ -37,12 +28,12 @@
         <el-form-item label="公告标题" prop="title">
           <el-input v-model="form.title" placeholder="公告标题"></el-input>
         </el-form-item>
-      
+
         <el-form-item label="公告内容" prop="content">
           <el-input v-model="form.content" placeholder="公告内容" type="textarea" :rows="5"></el-input>
         </el-form-item>
       </el-form>
-      
+
 
     </FormDrawer>
 
@@ -50,129 +41,35 @@
   </el-card>
 </template>
 <script setup>
-import { computed, reactive, ref } from "vue-demi";
-import { getNoticeList,createNotice,deleteNotice,updateNotice } from "~/api/notice"
+
+import { getNoticeList, createNotice, deleteNotice, updateNotice } from "~/api/notice"
 import FormDrawer from "~/components/FormDrawer.vue";
-import { toast} from '~/common/util'
+import { useInitTable, useInitForm } from '~/common/useCommon'
+import ListHeader from "~/components/ListHeader.vue"
 
 
 
 
-const tableData = ref([])
-const loading = ref(false)
-//分页
-const currentPage = ref(1)
-const total = ref(0)
-const limit = ref(10)
 
-//获取数据
-function getData(p = null) {
-  if (typeof p == 'number') {
-    currentPage.value = p
-  }
-
-  //console.log(p);
-  loading.value = true
-  getNoticeList(currentPage.value).then(res => {
-
-    tableData.value = res.list
-    total.value = res.totalCount
-  }).finally(() => {
-    loading.value = false
-  })
-}
-getData()
-
-
-//删除
-const handleDelete = (id) => {
-  loading.value = true
-  deleteNotice(id).then(res =>{
-    toast('删除成功')
-    getData()
-  }).finally(()=>{
-    loading.value = false
-  })
-
-}
-
-
-//新增
-
-
-
-const formDrawerRef =ref(null)  //表单部分 
-
-const formRef = ref(null)
-
-
-const editId =ref(0)
-
-const drawerTitle = computed(()=>editId.value?"修改":"新增")
-const form = reactive({
-  title:'',
-  content:''
+const { tableData, loading, currentPage, total, limit, getData,handleDelete} = useInitTable({
+  getList: getNoticeList,
+  delete:deleteNotice,
 })
 
-const rules ={
-  title:[ { required: true, message: '公告标题不能为空', trigger: 'blur' },],
-  content:[ { required: true, message: '公告内容不能为空', trigger: 'blur' },]
-
-}
 
 
-const handleSubmit =()=>{
-  formRef.value.validate((valid)=>{
-    if(!valid)return
-
-    formDrawerRef.value.showLoading()
-
-    const fun =editId.value? updateNotice(editId.value,form):createNotice(form)
-    fun.then(res=>{
-      toast(drawerTitle+"成功")
-      //修改刷新当前页 新增刷新第一页
-      getData(editId.value?false: 1)
-      formDrawerRef.value.close()
-
-    }).finally(()=>{
-      formDrawerRef.value.hideLoading()
-    })
-  })
-}
-//重置表单
-function resetForm(row =false) {
-  if(formRef.value){
-    formRef.value.clearValidate()
-  }
-  if(row){
-    for(const key in form){
-      form[key] = row[key]
-    }
-
-  }
-}
-
-//编辑
-const handleEdit =(row)=>{
-  editId.value = row.id
-  resetForm(row)
-  formDrawerRef.value.open()
-}
-
-
-
-
-
-//新增页面
-const handleCreate=()=>{
-  editId.value =0
-  resetForm({
-    title:"",
-    content:""
-  })
-  formDrawerRef.value.open()
-
-}
-
+const { formDrawerRef, formRef, form, rules, drawerTitle, handleSubmit, handleCreate, handleEdit } = useInitForm({
+  form: {
+    title: '',
+    content: ''
+  },
+  rules: {
+    title: [{ required: true, message: '公告标题不能为空', trigger: 'blur' },],
+    content: [{ required: true, message: '公告内容不能为空', trigger: 'blur' },]
+  },
+  getData,
+  update: updateNotice,
+  create: createNotice
+})
 
 </script>

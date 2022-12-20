@@ -16,6 +16,9 @@ import ImageList from '~/pages/image/list.vue'
 import NoticeList from '~/pages/notice/list.vue'
 import SettingBase from '~/pages/setting/base.vue'
 import CouponList from '~/pages/coupon/list.vue'
+import ManagerList from '~/pages/manager/list.vue'
+import AccessList from '~/pages/access/list.vue'
+
 
 
 
@@ -111,6 +114,20 @@ const asyncRoutes = [{
     meta:{
         title:"优惠券列表"
     }
+},{
+    path:"/manager/list",
+    name:"/manager/list",
+    component:ManagerList,
+    meta:{
+        title:"管理员管理"
+    }
+},{
+    path:"/access/list",
+    name:"/access/list",
+    component:AccessList,
+    meta:{
+        title:"菜单权限管理"
+    }
 }]
 
 export const router = createRouter({
@@ -127,8 +144,9 @@ export function addRoutes(menus){
     let hasNewRouters= false
     const findAndAddRoutesByMenus = (arr) =>{
         arr.forEach(e => {
+            console.log(e.frontpath)
             //e.fromtpath
-            let item= asyncRoutes.find(o=>o.path ==e.frontpath)
+            let item= asyncRoutes.find(o=>o.path == e.frontpath)
             if (item && !router.hasRoute(item.path)){
                 router.addRoute('admin',item)
                 hasNewRouters =true

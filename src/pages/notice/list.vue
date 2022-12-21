@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="never" class="border-0">
     <!-- 新增 刷新 -->
-    <ListHeader @create="handleCreate" @refresh="getData"></ListHeader>
+<ListHeader @create="handleCreate" @refresh="getData"></ListHeader>
     <el-table :data="tableData" stripe style="width: 100%" v-loading="loading">
       <el-table-column prop="title" label="公告标题" />
       <el-table-column prop="create_time" label="发布时间" width="380" />

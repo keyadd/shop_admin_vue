@@ -8,19 +8,6 @@ import { toast } from '~/common/util'
 // 列表 分页 
 export function useInitTable(opt = {}) {
 
-
-
-    // const searchForm = reactive({
-    //     keyword: ""
-    // })
-
-    // const resetSearchFrom = () => {
-    //     searchForm.keyword = ''
-    //     getData()
-
-    // }
-
-
     let searchForm = null
     let resetSearchFrom = null
     if (opt.searchForm) {
@@ -68,6 +55,35 @@ export function useInitTable(opt = {}) {
     }
     getData()
 
+    //删除
+    const handleDelete = (id) => {
+        loading.value = true
+        opt.delete(id).then(res => {
+            toast('删除成功')
+            getData()
+        }).finally(() => {
+            loading.value = false
+        })
+
+    }
+
+
+
+
+
+    //修改状态
+
+    const handleStatusChange = (status, row) => {
+        //console.log(status);
+        row.showLoading = true
+        opt.updateStatus(row.id, status).then(res => {
+            toast('修改状态成功')
+            row.status = status
+        }).finally(() => {
+            row.showLoading = false
+        })
+    }
+
     return {
         searchForm,
         resetSearchFrom,
@@ -76,13 +92,15 @@ export function useInitTable(opt = {}) {
         currentPage,
         total,
         limit,
-        getData
+        getData,
+        handleDelete,
+        handleStatusChange
     }
 }
 
 //新增 修改
 
-export function useInitForm(opt={}) {
+export function useInitForm(opt = {}) {
 
 
     const formDrawerRef = ref(null)  //表单部分 
@@ -97,11 +115,11 @@ export function useInitForm(opt={}) {
 
 
     const handleSubmit = () => {
-        
+
         formRef.value.validate((valid) => {
             if (!valid) return
 
-            
+
 
             formDrawerRef.value.showLoading()
 
@@ -127,7 +145,7 @@ export function useInitForm(opt={}) {
                 form[key] = row[key]
             }
         }
-        
+
     }
 
     //编辑
@@ -149,34 +167,7 @@ export function useInitForm(opt={}) {
 
 
 
-//删除
-const handleDelete = (id) => { 
-    loading.value = true
-    opt.delete(id).then(res => {
-        toast('删除成功')
-        getData()
-    }).finally(() => {
-        loading.value = false
-    })
 
-}
-
-
-
-
-
-//修改状态
-
-const handleStatusChange =(status,row)=>{
-    //console.log(status);
-    row.showLoading =true
-    opt.updateStatus(row.id,status).then(res=>{
-        toast('修改状态成功')
-        row.status =status
-    }).finally(()=>{
-        row.showLoading =false
-    })
-}
 
 
 
@@ -190,8 +181,7 @@ const handleStatusChange =(status,row)=>{
         handleSubmit,
         handleCreate,
         handleEdit,
-        handleDelete,
-        handleStatusChange
+
 
     }
 }

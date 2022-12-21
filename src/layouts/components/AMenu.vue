@@ -30,7 +30,7 @@
 <script setup>
 import { computed,ref } from 'vue';
 
-import { useRouter,useRoute } from 'vue-router';
+import { useRouter,useRoute,onBeforeRouteUpdate } from 'vue-router';
 import { useStore } from 'vuex';
 
 
@@ -44,6 +44,10 @@ const route = useRoute()
 //默认选中
 const defaultActive =ref(route.path)
 
+onBeforeRouteUpdate((to,from)=>{
+    defaultActive.value = to.path
+
+})
 
 
 //是否折叠

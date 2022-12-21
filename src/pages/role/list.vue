@@ -53,7 +53,19 @@
       <!-- 权限配置 -->
       <FormDrawer ref="setRuleFormDrawerRef" title="权限配置" @submit="handleRoleSubmit">
         
-        <el-tree-v2 :data="ruleList" :props="{ label: 'name', children: 'child' }" show-checkbox :height="treeHeight" />
+        <el-tree-v2 :check-strictly="checkStrictly" @check="handleTreeCheck" ref="elTreeRef" node-key ="id" :default-expanded-keys="defaultExpandedKeys" :data="ruleList" :props="{ label: 'name', children: 'child' }" show-checkbox :height="treeHeight" >
+            <template #default ={node,data}>
+            <div class="flex items-center">
+                <el-tag :type="data.menu? '':'info'" size="small">
+                    {{data.menu ? '菜单':'权限'}}
+                </el-tag>
+                <span class="ml-2 text-sm">{{data.name}}</span>
+
+            </div>
+            
+            </template>
+        
+        </el-tree-v2>
   
       </FormDrawer>
   
@@ -65,12 +77,13 @@
   </template>
   <script setup>
   
-  import { getRoleList, createRole, deleteRole, updateRole,updateRoleStatus } from "~/api/role"
+  import { getRoleList, createRole, deleteRole, updateRole,updateRoleStatus,setRoleRules} from "~/api/role"
   import FormDrawer from "~/components/FormDrawer.vue";
   import { useInitTable, useInitForm } from '~/common/useCommon'
   import {getRuleList} from "~/api/rule"
   import ListHeader from "~/components/ListHeader.vue"
   import { ref } from "vue-demi";
+  import {toast} from "~/common/util"
   
   
   
@@ -102,13 +115,30 @@
 const setRuleFormDrawerRef =ref(null)
 const ruleList =ref([])
 const treeHeight =ref(0)
+const roleId =ref(0)
 
+const elTreeRef =ref(null)
+const rulesId =ref([])   //当前用户拥有的权限id
+
+
+const checkStrictly = ref(false)
+
+const defaultExpandedKeys = ref([])
 const openSetRole = (row)=>{
-    treeHeight.value =window.innerHeight -170
+    roleId.value = row.id
+    treeHeight.value =window.innerHeight -180
+    checkStrictly.value = true
     
     getRuleList(1).then(res=>{
         ruleList.value = res.list
+        defaultExpandedKeys.value =res.list.map(o=>o.id)
         setRuleFormDrawerRef.value.open()
+        //当前角色拥有的角色id
+        rulesId.value = row.rules.map(o=>o.id)
+        setTimeout(()=>{
+            elTreeRef.value.setCheckedKeys(rulesId.value)
+            checkStrictly.value = false
+        },150)
 
     })
     
@@ -116,7 +146,21 @@ const openSetRole = (row)=>{
 }
 
 const handleRoleSubmit = ()=>{
+    setRuleFormDrawerRef.value.showLoading()
+    setRoleRules(roleId.value,rulesId.value)
+    .then(res=>{
+        toast('配置成功')
+        getData()
+        setRuleFormDrawerRef.value.close()
 
+    }).finally(()=>{
+        setRuleFormDrawerRef.value.hideLoading()
+    })
+
+}
+const handleTreeCheck=(...e)=>{
+    const {checkedKeys,halfCheckedKeys} = e[1]
+    rulesId.value =[...checkedKeys,...halfCheckedKeys]
 }
 
 

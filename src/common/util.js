@@ -48,3 +48,55 @@ export function showPrompt(tip,value=""){
       })
 
 }
+
+
+
+//将query对象转成url参数
+
+
+export function queryParams(query){
+    let arr = []
+    for (const key in query) {
+        if (query[key]){
+            arr.push(`${key}=${encodeURIComponent(query[key])}`)
+
+        }
+    }
+    let r = arr.join('&')
+
+    r=r?("?"+r):""
+    return r
+
+}
+
+//上移
+export function useArrayMoveUp(arr,index){
+    swapArray(arr,index,index-1)
+
+}
+
+//下移
+export function useArrayMoveDown(arr,index){
+    swapArray(arr,index,index+1)
+
+}
+function swapArray(arr,index1,index2){
+    arr[index1]= arr.splice(index2,1,arr[index1])[0]
+    return arr
+}
+
+// sku排列算法
+export function cartesianProductOf() {
+    return Array.prototype.reduce.call(arguments, function (a, b) {
+        var ret = [];
+        a.forEach(function (a) {
+            b.forEach(function (b) {
+                ret.push(a.concat([b]));
+            });
+        });
+        return ret;
+    }, [
+        []
+    ]);
+  }
+  

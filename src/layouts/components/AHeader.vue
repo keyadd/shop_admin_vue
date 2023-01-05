@@ -15,7 +15,7 @@
                 <Refresh />
             </el-icon>
         </el-tooltip>
-        <div class="ml-auto flex items-center">
+        <div class="header_item">
             <el-tooltip class="box-item" effect="dark" content="全屏" placement="bottom-start">
                 <el-icon class="icon-btn" @click="toggle">
                     <FullScreen v-if="!isFullscreen" />
@@ -120,7 +120,7 @@ function handleRefresh() {
 
 
 </script>
-<style>
+<style >
 .a-header {
 
     @apply flex bg-sky-500 text-light-50 fixed top-0 right-0 left-0;
@@ -150,5 +150,8 @@ function handleRefresh() {
     cursor: pointer;
     @apply flex justify-center items-center mx-1;
 
+}
+.header_item{
+    @apply ml-auto flex items-center;
 }
 </style>

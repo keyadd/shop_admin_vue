@@ -77,12 +77,64 @@ export function useInitTable(opt = {}) {
         //console.log(status);
         row.showLoading = true
         opt.updateStatus(row.id, status).then(res => {
-            toast('修改状态成功')
-            row.status = status
+            if (status ==0){
+                toast('优惠卷失效成功')
+                getData()
+            }else{
+                toast('修改状态成功')
+                row.status = status
+            }
+            
         }).finally(() => {
             row.showLoading = false
         })
     }
+
+
+
+    //选中的id
+    const multiSelectIds = ref([])
+    const handleSelectionChange = (e) => {
+        multiSelectIds.value = e.map(o => o.id)
+
+    }
+
+    //批量删除
+    const multipleTableRef = ref(null)
+    const handleMultiDelete = () => {
+        loading.value = true
+        opt.delete(multiSelectIds.value).then(res => {
+            toast('删除成功')
+            //清空选中
+            if (multipleTableRef.value) {
+                multipleTableRef.value.clearSelection()
+            }
+            getData()
+
+        }).finally(() => {
+            loading.value = false
+        })
+
+    }
+//批量修改状态
+    const handleMultiStatusChange = (status) => {
+        loading.value = true
+        opt.updateStatus(multiSelectIds.value,status).then(res => {
+            toast('修改状态成功')
+            //清空选中
+            if (multipleTableRef.value) {
+                multipleTableRef.value.clearSelection()
+            }
+            getData()
+
+        }).finally(() => {
+            loading.value = false
+        })
+
+    }
+
+
+
 
     return {
         searchForm,
@@ -94,17 +146,23 @@ export function useInitTable(opt = {}) {
         limit,
         getData,
         handleDelete,
-        handleStatusChange
+        handleStatusChange,
+        handleSelectionChange,
+        multipleTableRef,
+        handleMultiDelete,
+        handleMultiStatusChange,
+        multiSelectIds
     }
 }
 
-//新增 修改
+
 
 export function useInitForm(opt = {}) {
 
 
     const formDrawerRef = ref(null)  //表单部分 
 
+    const defaultForm = opt.form
     const formRef = ref(null)
     const editId = ref(0)
 
@@ -122,8 +180,17 @@ export function useInitForm(opt = {}) {
 
 
             formDrawerRef.value.showLoading()
+            let body = {}
 
-            const fun = editId.value ? opt.update(editId.value, form) : opt.create(form)
+            if(opt.beforeSubmit && typeof opt.beforeSubmit == 'function'){
+                body = opt.beforeSubmit({...form})
+            }else{
+                body = form
+            }
+
+
+
+            const fun = editId.value ? opt.update(editId.value, body) : opt.create(body)
             fun.then(res => {
                 toast(drawerTitle.value + "成功")
                 //修改刷新当前页 新增刷新第一页
@@ -140,18 +207,17 @@ export function useInitForm(opt = {}) {
         if (formRef.value) {
             formRef.value.clearValidate()
         }
-        if (row) {
-            for (const key in row) {
+        
+            for (const key in defaultForm) {
                 form[key] = row[key]
             }
-        }
+        
 
     }
 
     //编辑
     const handleEdit = (row) => {
         editId.value = row.id
-
         resetForm(row)
         formDrawerRef.value.open()
     }
@@ -159,7 +225,7 @@ export function useInitForm(opt = {}) {
     //新增页面
     const handleCreate = () => {
         editId.value = 0
-        resetForm(opt.form)
+        resetForm(defaultForm)
         formDrawerRef.value.open()
 
     }

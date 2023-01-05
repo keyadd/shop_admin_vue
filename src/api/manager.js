@@ -1,4 +1,5 @@
 import axios from "~/axios"
+import {queryParams} from "~/common/util"
 
 
 //用户登陆
@@ -28,16 +29,7 @@ export function updatepassword(data){
 
 //获取管理员接口
 export function getManagerList(page,query ={}){
-    let arr = []
-    for (const key in query) {
-        if (query[key]){
-            arr.push(`${key}=${encodeURIComponent(query[key])}`)
-
-        }
-    }
-    let r = arr.join('&')
-
-    r=r?("?"+r):""
+    let r =queryParams(query) 
     return axios.get(`/admin/manager/${page}${r}`)
 
 }

@@ -24,5 +24,5 @@ import 'virtual:windi.css'
 import './permission'
 
 import 'nprogress/nprogress.css'
-import 'normalize.css/normalize.css'
+// import 'normalize.css/normalize.css'
 app.mount('#app')

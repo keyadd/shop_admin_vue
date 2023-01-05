@@ -1,18 +1,18 @@
 <template>
     <el-card shadow="never" class="border-0">
         <ListHeader @create="handleCreate" @refresh="getData" />
-        <el-tree :data="tableData" :props="{ label: 'name', children: 'child' }" v-loading="loading" node-key="id"
+        <el-tree  style="width: 100%" :data="tableData" :props="{ label: 'name', children: 'child' }" v-loading="loading" node-key="id"
             :default-expanded-keys="defaultExpandedKeys">
-            <template #default="{ node, data }">
+            <template  #default="{ node, data }">
                 <div class="custom-tree-node">
                     <el-tag size="small" :type="data.menu ? '' : 'info'">{{ data.menu ? '菜单' : '权限' }}</el-tag>
                     <el-icon v-if="data.icon" :size="16" class="ml-2">
                         <component :is="data.icon" />
                     </el-icon>
-                    <span>{{ data.name }}</span>
+                    <span style="width: 100px;">{{ data.name }}</span>
                     <div class="ml-200">
                         <el-switch :model-value="data.status" :active-value="1" :inactive-value="0" @change="handleStatusChange($event,data)"></el-switch>
-                        <el-button text type="primary" size="small" @click.stop="handleEdit(data)">修改</el-button>
+                        <el-button  text type="primary" size="small" @click.stop="handleEdit(data)">修改</el-button>
                         <el-button text type="primary" size="small" @click.stop="addChild(data.id)">增加</el-button>
                         <el-popconfirm title="是否要删除该记录" confirm-button-text="确认" cancel-button-text="取消"
                         @confirm="handleDelete(data.id)">
@@ -146,6 +146,9 @@ const addChild = (id) =>{
 
 .btn {
 
+    margin-left: auto;
+}
+.ml_lift{
     margin-left: auto;
 }
 </style>

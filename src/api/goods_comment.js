@@ -16,21 +16,12 @@ export function updateGoodsCommentStatus(id,status){
     return axios.post(`/admin/goods_comment/${id}/update_status`,{status})
 
 }
-
-//创建管理员
-export function createGoodsComment(data){
-    return axios.post(`/admin/GoodsComment`,data)
+export function reviewGoodsComment(id,data){
+    return axios.post(`/admin/goods_comment/review/${id}`,{data})
 
 }
 
-//编辑管理员信息
-export function updateGoodsComment(id,data){
-    return axios.post(`/admin/GoodsComment/${id}`,data)
 
-}
-//删除管理员
-export function deleteGoodsComment(id){
-    return axios.post(`/admin/GoodsComment/${id}/delete`)
 
-}
+
 

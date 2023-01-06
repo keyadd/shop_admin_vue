@@ -2,7 +2,8 @@
     <el-card shadow="never" class="border-0">
         <ListHeader @create="handleCreate" @refresh="getData" />
         <el-tree  style="width: 100%;" :data="tableData" :props="{ label: 'name', children: 'child' }" v-loading="loading" node-key="id">
-            <template style="display: flex;"  #default="{ node, data }">
+            
+            <template  #default="{ data }">
                 <div class="custom-tree-node">
                     <span style="width: 100px;">{{ data.name }}</span>
                     <div class="ml-200 w-50">

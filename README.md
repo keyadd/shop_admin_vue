@@ -17,7 +17,7 @@ https://mallweb.acorn.eu.org/login
 生产环节配置
 .env.production
 
-golang +mysql +redis 后端地址 https://github.com/keyadd/web_app.git
+golang +mysql +redis 后端地址  https://github.com/keyadd/gin_mall.git
 
 
 项目展示图片

@@ -11,7 +11,7 @@
 
         <el-card shadow="never" class="border-0">
             <!-- 搜索 -->
-            <Search :model="searchForm" @search="getData" @reset="resetSearchFrom">
+            <Search :model="searchForm" @search="onSearch" @reset="resetSearchFrom">
 
                 <SearchItem label="关键词">
                     <el-input v-model="searchForm.title" placeholder="商品名称" clearable></el-input>
@@ -20,10 +20,10 @@
 
                 <template #show>
                     <SearchItem label="商品分类">
-                        <el-select v-model="searchForm.category_id" placeholder="请选择商品分类" clearable filterable>
-                            <el-option v-for="item in category_list" :key="item.id" :label="item.name" :value="item.id">
-                            </el-option>
-                        </el-select>
+
+                        <el-cascader v-model="searchForm.category_id" :options="category_list"
+                        :props="{ value: 'id', label: 'name', children: 'children', checkStrictly: true, emitPath: false }"
+                        placeholder="请选择商品分类" />
                     </SearchItem>
                 </template>
 
@@ -52,7 +52,7 @@
 
             <!-- 新增 刷新 -->
 
-            <el-table @selection-change="handleSelectionChange" ref="multipleTableRef" :data="tableData" stripe
+            <el-table @selection-change="handleSelectionChange" border ref="multipleTableRef" :data="tableData" stripe
                 style="width: 100%" v-loading="loading">
                 <el-table-column type="selection" width="55" />
                 <el-table-column label="商品" width="300px">
@@ -102,7 +102,8 @@
                     <template #default="scope">
                         <div v-if="searchForm.tab != 'delete'">
                             <el-button class="px-1" type="primary" size="small" text @click="handleEdit(scope.row)">修改</el-button>
-                            <el-button class="px-1" :type="(scope.row.sku_type == 0 && !scope.row.sku_value) ||(scope.row.sku_type ==1 && !scope.row.goods_skus.length)?'danger':'primary'" size="small" text @click="handleSetGoodsSkus(scope.row)" :loading="scope.row.skusLoading">商品规格</el-button>
+                            
+                            <el-button class="px-1" :type="(scope.row.sku_type == 0 && !scope.row.sku_value) ||(scope.row.sku_type ==1 && scope.row.goods_skus!=null)?'danger':'primary'" size="small" text @click="handleSetGoodsSkus(scope.row)" :loading="scope.row.skusLoading">商品规格</el-button>
 
                             <el-button class="px-1" :type="scope.row.goods_banner.length==0?'danger':'primary'" size="small" text @click="handleSetGoodsBanners(scope.row)" :loading="scope.row.bannersLoading">设置轮播图</el-button>
 
@@ -212,7 +213,7 @@ import { useInitTable, useInitForm } from '~/common/useCommon'
 
 
 
-const { searchForm, resetSearchFrom, tableData, loading, currentPage, total, limit, getData, handleDelete, handleSelectionChange, multipleTableRef, handleMultiDelete,handleMultiStatusChange,multiSelectIds } = useInitTable({
+const { searchForm, resetSearchFrom, tableData, loading, currentPage, total, onSearch,limit, getData, handleDelete, handleSelectionChange, multipleTableRef, handleMultiDelete,handleMultiStatusChange,multiSelectIds } = useInitTable({
     searchForm: {
         title: "",
         tab: "all",
@@ -228,7 +229,7 @@ const { searchForm, resetSearchFrom, tableData, loading, currentPage, total, lim
             o.skusLoading = false
             return o
         })
-        total.value = res.totalCount
+        total.value = res.total
 
     },
     delete: deleteGoods,
@@ -289,7 +290,7 @@ const tabbars = [
 //商品分类
 const category_list = ref([])
 getCategoryList().then(res => {
-    category_list.value = res
+    category_list.value = res.list
 })
 
 

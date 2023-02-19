@@ -67,6 +67,13 @@ export function useInitTable(opt = {}) {
 
     }
 
+    //搜索
+
+    const onSearch = () => {
+        currentPage.value = 1
+        getData()
+      }
+
 
 
 
@@ -74,10 +81,10 @@ export function useInitTable(opt = {}) {
     //修改状态
 
     const handleStatusChange = (status, row) => {
-        //console.log(status);
+        //console.log(row.id);
         row.showLoading = true
         opt.updateStatus(row.id, status).then(res => {
-            if (status ==0){
+            if (status !=0&&status!=1){
                 toast('优惠卷失效成功')
                 getData()
             }else{
@@ -146,6 +153,7 @@ export function useInitTable(opt = {}) {
         limit,
         getData,
         handleDelete,
+        onSearch,
         handleStatusChange,
         handleSelectionChange,
         multipleTableRef,

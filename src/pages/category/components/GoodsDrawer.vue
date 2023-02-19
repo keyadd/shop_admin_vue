@@ -59,7 +59,7 @@ const open = (item)=>{
 function getData(){
 
     return getCategoryGoods(category_id.value).then(res=>{
-        tableData.value =res.map(o=>{
+        tableData.value =res.list.map(o=>{
             o.loading= false
             return o
         })
@@ -80,12 +80,12 @@ const handleDelete=(row)=>{
 
 const chooseGoodsRef = ref(null)
 const handleConnect = ()=>{
-    console.log(111);
+    //console.log(111);
     chooseGoodsRef.value.open((goods_ids)=>{
         formDrawerRef.value.showLoading()
         connectCategoryGoods({
-            category_id:category_id.value,
-            goods_ids
+            id:category_id.value,
+            goods_ids:goods_ids
         }).then(res=>{
             getData()
             toast('关联成功')

@@ -3,7 +3,7 @@
       drag
       :action="uploadImage"
       multiple
-      :headers="{token}"
+      :headers="{ 'Authorization': token }"
       name="img"
       :data="data"
       :on-success="uploadSuccess"

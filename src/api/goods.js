@@ -4,9 +4,9 @@ import {queryParams} from "~/common/util"
 
 
 //获取商品接口
-export function getGoodsList(page,query ={}){
-    let r =queryParams(query)
-    return axios.get(`/admin/goods/${page}${r}`)
+export function getGoodsList(page,searchForm){
+    const data = {"page":page,"page_size":10,"title":searchForm.title,"tab":searchForm.tab}
+    return axios.post(`/goods/list`,data)
 
 }
 
@@ -34,7 +34,8 @@ export function deleteGoods(ids){
 
 //
 export function readGoods(id){
-    return axios.get(`/admin/goods/read/${id}`)
+    const data = {"id":id}
+    return axios.post(`/goods/read`,data)
 }
 //设置商品轮播图
 export function setGoodsBanner(id,data){

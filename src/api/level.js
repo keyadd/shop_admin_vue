@@ -2,24 +2,27 @@ import axios from "~/axios";
 
 //获取会员等级
 export function getUserLevelList(page){
-    return axios.get(`/admin/user_level/${page}`)
+    const data = {"page":page,"page_size":10}
+    return axios.post(`/user_level/list`,data)
 }
 //创建会员等级
 export function createUserLevel(data){
-    return axios.post(`/admin/user_level`,data)
+    return axios.post(`/user_level/create`,data)
 }
 //修改会员等级
 export function updateUserLevel(id,data){
-    return axios.post(`/admin/user_level/`+id,data)
+    return axios.post(`/user_level/edit`+id,data)
 }
 
 //删除会员等级
 export function deleteUserLevel(id){
-    return axios.post(`/admin/user_level/${id}/delete`)
+    const data = {"id":id}
+    return axios.post(`/user_level/delete`,data)
 }
 
 //修改会员等级状态
 export function updateUserLevelStatus(id,status){
-    return axios.post(`/admin/user_level/${id}/update_status`,{status})
+    const data = {"id":id,"status":String(status)}
+    return axios.post(`/user_level/update_status`,)
 
 }

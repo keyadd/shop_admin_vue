@@ -43,11 +43,11 @@ const store = createStore({
   },
   actions:{
     //登录
-    login({commit},{username,password}){
+    login({commit},{username,password,captcha,captchaId}){
         return new Promise((resolve,reject)=>{
-            login(username,password).then(res=>{
+            login(username,password,captcha,captchaId).then(res=>{
                  //设置cookie
-                setToken(res.token)
+                setToken(res)
                 resolve(res)
 
             }).catch(err=>reject(err))

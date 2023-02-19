@@ -33,7 +33,7 @@
 
         <!-- 新增 刷新 -->
 
-        <el-table :data="tableData" stripe style="width: 100%" v-loading="loading">
+        <el-table :data="tableData" border stripe style="width: 100%" v-loading="loading">
             <el-table-column label="会员名" width="200px">
                 <template #default="{ row }">
                     <div class="flex items-center">
@@ -143,7 +143,7 @@
 </template>
 <script setup>
 import { ref } from "vue-demi";
-import { getUserList, updateUserStatus, createUser, updateUser, deleteUser } from "~/api/User"
+import { getUserList, updateUserStatus, createUser, updateUser, deleteUser } from "~/api/user"
 import FormDrawer from "~/components/FormDrawer.vue"
 import ChooseImage from '~/components/ChooseImage.vue'
 import ListHeader from "~/components/ListHeader.vue"
@@ -168,7 +168,7 @@ const { searchForm, resetSearchFrom, tableData, loading, currentPage, total, lim
             o.statusLoading = false
             return o
         })
-        total.value = res.totalCount
+        total.value = res.total
         user_level.value = res.user_level
 
     },

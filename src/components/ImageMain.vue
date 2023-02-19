@@ -77,8 +77,9 @@ function getData(p = null) {
 
    // console.log(p);
     loading.value = true
-    getImageList(image_class_id.value, currentPage.value).then(res => {
-        total.value = res.totalCount
+    const data = {"id":image_class_id.value,"page":currentPage.value,"page_size":10}
+    getImageList(data).then(res => {
+        total.value = res.total
         list.value = res.list.map(o=>{
             o.checked =false
             return o
@@ -103,7 +104,8 @@ const loadData = (id) => {
 const handleEdit = (item) => {
     showPrompt('重命名', item.name).then(({ value }) => {
         loading.value = true
-        updateImage(item.id, value).then(res => {
+        const data = { "id": item.id ,"name":value}
+        updateImage(data).then(res => {
             toast("修改成功")
             getData()
 
@@ -117,7 +119,8 @@ const handleEdit = (item) => {
 //删除图片
 const handleDelete=(id) =>{
     loading.value = true
-    deleteImage([id]).then(res=>{
+    const data = { "ids": [id]}
+    deleteImage(data).then(res=>{
         toast('删除成功')
         getData()
     })

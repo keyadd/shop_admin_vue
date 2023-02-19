@@ -2,7 +2,7 @@
     <el-card shadow="never" class="border-0">
       <!-- 新增 刷新 -->
   <ListHeader layout="create,delete,refresh"  @create="handleCreate" @refresh="getData" @delete="handleMultiDelete"></ListHeader>
-      <el-table ref="multipleTableRef" :data="tableData" stripe style="width: 100%" v-loading="loading" @selection-change="handleSelectionChange">
+      <el-table ref="multipleTableRef" :data="tableData" border stripe style="width: 100%" v-loading="loading" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="name" label="规格名称" />
         <el-table-column prop="default" label="规格值" />

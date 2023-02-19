@@ -20,11 +20,11 @@
             <el-table-column type="expand">
                 <template #default="{row}">
                     <div class="flex pl-18">
-                        <el-avatar :size="50"  :src="row.user.avatar" fit="fill" class="mr-3" ></el-avatar>
+                        <el-avatar :size="50"  :src="row.avatar" fit="fill" class="mr-3" ></el-avatar>
                         <div class="flex-1">
                             <h6 class=" flex items-center ">
 
-                                {{ row.user.nickname||row.user.username }}
+                                {{ row.nickname||row.username }}
                             <small class="text-gray-400 ml-2">{{ row.review_time }}</small>
                             <el-button size="small" class="ml-auto" @click="openTextarea(row)" v-if="!row.textareaEdit && !row.extra">回复</el-button>
                             </h6>
@@ -71,11 +71,11 @@
             <el-table-column label="商品" width="200px">
                 <template #default="{ row }">
                     <div class="flex items-center">
-                        <el-image :src="row.goods_item ? row.goods_item.cover : ''" fit="fill" :lazy="true"
+                        <el-image :src="row ? row.cover : ''" fit="fill" :lazy="true"
                             style="width50px;height:50px" class="rounded"></el-image>
 
                         <div class="ml-3">
-                            <h6>{{ row.goods_item?.title ?? '商品已被删除' }}</h6>
+                            <h6>{{ row.title ?? '商品已被删除' }}</h6>
                         </div>
 
                     </div>
@@ -86,7 +86,7 @@
             <el-table-column label="评价信息" width="200">
                 <template #default="{ row }">
                     <div>
-                        <p>用户:{{ row.user.nickname || row.user.username }}</p>
+                        <p>用户:{{ row.nickname || row.username }}</p>
                         <p>
                             <el-rate v-model="row.rating" disabled show-score text-color="#ff9900"
                                  />
@@ -141,7 +141,7 @@ const { searchForm, resetSearchFrom, tableData, loading, currentPage, total, lim
             o.textareaEdit =false
             return o
         })
-        total.value = res.totalCount
+        total.value = res.total
         roles.value = res.roles
 
     },

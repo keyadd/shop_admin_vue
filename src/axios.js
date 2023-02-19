@@ -2,10 +2,11 @@ import axios from "axios";
 import { ElNotification } from 'element-plus'
 import {getToken} from '~/common/auth'
 import { toast } from "~/common/util";
+import store from "./store"
 
 
 const service = axios.create({
-    baseURL:"/api"
+    baseURL:import.meta.env.VITE_APP_BASE_API
 })
 
 
@@ -16,7 +17,7 @@ service.interceptors.request.use(function (config) {
 
     const token = getToken()
     if(token){
-        config.headers["token"] = token
+        config.headers["Authorization"] = token
     }
 
     return config;
@@ -28,13 +29,17 @@ service.interceptors.request.use(function (config) {
 // 添加响应拦截器
 service.interceptors.response.use(function (response) {
     // 对响应数据做点什么
-    return response.data.data;
+    
+    return response.request.responseType=="blob" ?response.data: response.data.data;
   }, function (error) {
+    //console.log(error.response.data)
+
+    
     const msg = error.response.data.msg || "请求失败"
     // 对响应错误做点什么
-    if(msg == "非法token，请先登录！"){
-      state.dispatch('logout').finally(()=>location.reload())
-
+    
+    if( error.response.data.code == 1007){
+      store.dispatch('logout').finally(()=>location.reload())
     }
    // console.log(error)
     toast(msg,error)

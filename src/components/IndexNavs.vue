@@ -55,7 +55,7 @@
             icon:"set-up",
             color:"text-grey-500",
             title:"配置",
-            path:"/setting/base"
+            path:"/record/list"
         },
         {
             icon:"files",

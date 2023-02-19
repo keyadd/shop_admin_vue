@@ -2,7 +2,7 @@
   <el-card shadow="never" class="border-0">
     <!-- 新增 刷新 -->
     <ListHeader @create="handleCreate" @refresh="getData"></ListHeader>
-    <el-table :data="tableData" stripe style="width: 100%" v-loading="loading">
+    <el-table :data="tableData" stripe border style="width: 100%" v-loading="loading">
       <el-table-column label="优惠卷名称" width="350px">
         <template #default="{ row }">
           <div class="border border-dashed py-2 px-4 rounded" :class="row.statusText == '领取中' ? 'active' : 'inactive'">
@@ -110,7 +110,7 @@ const { tableData, loading, currentPage, total, limit, getData, handleDelete,han
       o.statusText = formatStatus(o)
       return o
     })
-    total.value = res.totalCount
+    total.value = res.total
 
   },
   delete: deleteCoupon,

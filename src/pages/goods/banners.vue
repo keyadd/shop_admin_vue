@@ -35,7 +35,7 @@ const open = (row)=>{
     goodsId.value =row.id
     row.bannersLoading = true
     readGoods(goodsId.value).then(res=>{
-        form.banners = res.goodsBanner.map(o=>o.url);
+        form.banners = res.goods_banner.map(o=>o.url);
         dialogVisible.value =true
 
     }).finally(()=>{

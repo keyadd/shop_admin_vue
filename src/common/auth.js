@@ -1,6 +1,6 @@
 import { useCookies } from '@vueuse/integrations/useCookies'
 
-const TokeKey = "admin-cookie"
+const TokeKey = "Authorization"
 const cookie = useCookies()
 
 

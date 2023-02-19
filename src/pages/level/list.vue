@@ -2,7 +2,7 @@
   <el-card shadow="never" class="border-0">
     <!-- 新增 刷新 -->
     <ListHeader @create="handleCreate" @refresh="getData"></ListHeader>
-    <el-table :data="tableData" stripe style="width: 100%" v-loading="loading">
+    <el-table :data="tableData" border stripe style="width: 100%" v-loading="loading">
       <el-table-column prop="name" label="会员等级" align="center" />
       <el-table-column prop="discount" label="折扣率" align="center" />
       <el-table-column prop="level" label="等级序号" align="center" />
@@ -15,7 +15,6 @@
         </template>
 
       </el-table-column>
-      <el-table-column prop="create_time" label="发布时间" width="380" />
       <el-table-column label="操作" width="250px" align="center">
         <template #default="scope">
           <el-button type="primary" size="small" text @click="handleEdit(scope.row)">修改</el-button>

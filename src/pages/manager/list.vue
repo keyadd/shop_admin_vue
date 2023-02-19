@@ -2,7 +2,7 @@
     <el-card shadow="never" class="border-0">
         <!-- 搜索 -->
 
-        <Search :model="searchForm" @search="getData" @reset="resetSearchFrom">
+        <Search :model="searchForm" @search="onSearch" @reset="resetSearchFrom">
 
             <SearchItem label="关键词">
                 <el-input v-model="searchForm.keyword" placeholder="管理员昵称" clearable></el-input>
@@ -37,7 +37,7 @@
 
         <!-- 新增 刷新 -->
 
-        <el-table :data="tableData" stripe style="width: 100%" v-loading="loading">
+        <el-table :data="tableData" border stripe style="width: 100%" v-loading="loading">
             <el-table-column label="管理员" width="200px">
                 <template #default="{ row }">
                     <div class="flex items-center">
@@ -137,17 +137,18 @@ import { useInitTable, useInitForm } from '~/common/useCommon'
 
 const roles = ref([])
 
-const { searchForm, resetSearchFrom, tableData, loading, currentPage, total, limit, getData, handleDelete, handleStatusChange } = useInitTable({
+const { searchForm, resetSearchFrom, tableData, loading, currentPage, total, onSearch,limit, getData, handleDelete, handleStatusChange } = useInitTable({
     searchForm: {
         keyword: ""
     },
     getList: getManagerList,
     noGetListSuccess: (res) => {
+        
         tableData.value = res.list.map(o => {
             o.statusLoading = false
             return o
         })
-        total.value = res.totalCount
+        total.value = res.total
         roles.value = res.roles
 
     },

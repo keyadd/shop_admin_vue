@@ -19,16 +19,19 @@ export const sku_list =ref([])
 
 //初始化规格选项列表
 export function initSkuCardList(d) {
-    sku_card_list.value = d.goodsSkusCard.map(item => {
+    //console.log(d);
+    sku_card_list.value = d.goods_skus_card.map(item => {
         item.text = item.name
         item.loading = false
-        item.goodsSkusCardValue.map(v => {
+        item.goods_skus_card_value.map(v => {
+            //console.log(v);
             v.text = v.value || "属性值"
             return v
         })
         return item
     })
-    sku_list.value = d.goodsSkus
+   //
+    sku_list.value = d.goods_skus
 }
 
 //添加规格选项  
@@ -46,7 +49,7 @@ export function addSkuCardEvent() {
             ...res,
             text: res.name,
             loading: false,
-            goodsSkusCardValue: []
+            goods_skus_card_value: []
         })
 
     }).finally(() => {
@@ -147,6 +150,7 @@ export function handleChooseSetGoodsSkusCard(id,data){
 
 //初始化规格值
 export function initSkuCardItem(id) {
+    
 
     const loading = ref(false)
 
@@ -158,9 +162,10 @@ export function initSkuCardItem(id) {
         loading.value=true
         deleteGoodsSkusCardValue(tag.id)
         .then(res=>{
-            let i = item.goodsSkusCardValue.findIndex(o=>o.id ===tag.id)
+            
+            let i = item.goods_skus_card_value.findIndex(o=>o.id ===tag.id)
             if(i !=-1){
-                item.goodsSkusCardValue.splice(i,1)
+                item.goods_skus_card_value.splice(i,1)
             }
             getTableData()
 
@@ -192,7 +197,7 @@ export function initSkuCardItem(id) {
             value:inputValue.value
 
         }).then(res=>{
-            item.goodsSkusCardValue.push({
+            item.goods_skus_card_value.push({
                 ...res,
                 text:res.value
             })
@@ -240,7 +245,9 @@ export function initSkuCardItem(id) {
 //初始化表格
 
 export function initSkuTable(){
-    const skuLabels = computed(()=>sku_card_list.value.filter(v=>v.goodsSkusCardValue.length>0))
+    
+    const skuLabels = computed(()=>sku_card_list.value.filter(v=>v.goods_skus_card_value.length>0))
+    
     //获取表头
     const tableThs = computed(()=>{
         let length =skuLabels.value.length
@@ -284,14 +291,16 @@ export function initSkuTable(){
 
 
 function getTableData(){
+    //(111);
     setTimeout(() => {
         if(sku_card_list.value.length === 0){
             return []
         }else{
             let list = []
+           
             sku_card_list.value.forEach(o=>{
-                if(o.goodsSkusCardValue && o.goodsSkusCardValue.length){
-                    list.push(o.goodsSkusCardValue)
+                if(o.goods_skus_card_value && o.goods_skus_card_value.length){
+                    list.push(o.goods_skus_card_value)
                 }
             })
             if(list.length ==0){

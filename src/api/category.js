@@ -3,41 +3,46 @@ import axios from "~/axios"
 
 
 export function getCategoryList(){
-    return axios.get("/admin/category")
+    return axios.post("/category/list")
 }
 
 
 
 export function createCategory(data){
-    return axios.post(`/admin/category`,data)
+    return axios.post(`/category/create`,data)
 }
 
-export function updateCategory(id,data){
-    return axios.post(`/admin/category/`+id,data)
+export function updateCategory(id,from){
+    const data = {"id":id,"name":from.name,"category_id":from.category_id,"order":from.order,"status":from.status} 
+    return axios.post(`/category/edit`,data)
 }
 
 
 
 export function updateCategoryStatus(id,status){
-    return axios.post(`/admin/category/${id}/update_status`,{status})
+    const data = {"id":id,"status":String(status)}
+    return axios.post(`/category/update_status`,data)
 }
 
 export function deleteCategory(id){
-    return axios.post(`/admin/category/${id}/delete`)
+    const data = {"id":id}
+    return axios.post(`/category/delete`,data)
 }
 
 //获取分类关联商品
 export function getCategoryGoods(id){
-    return axios.get(`/admin/app_category_item/list?category_id=${id}`)
+    const data = {"id":id}
+    return axios.post(`/app_category_item/list`,data)
 }
 
 
 //删除分类关联商品
 export function deleteCategoryGoods(id){
-    return axios.post(`/admin/app_category_item/${id}/delete`)
+    const data = {"id":id}
+    return axios.post(`/app_category_item/delete`,data)
 }
 
 //关联商品
 export function connectCategoryGoods(data){
-    return axios.post(`/admin/app_category_item`,data)
+    return axios.post(`/app_category_item/create`,data)
 }

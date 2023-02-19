@@ -1,6 +1,7 @@
 import {
     createRouter,
-    createWebHashHistory
+    createWebHashHistory,
+    createWebHistory
 } from 'vue-router'
 
 import Index from '~/pages/index.vue'
@@ -17,10 +18,14 @@ import NoticeList from '~/pages/notice/list.vue'
 import SettingBase from '~/pages/setting/base.vue'
 import CouponList from '~/pages/coupon/list.vue'
 import ManagerList from '~/pages/manager/list.vue'
-import AccessList from '~/pages/access/list.vue'
+import MenuList from '~/pages/menu/list.vue'
 import RoleList from '~/pages/role/list.vue'
 import SkusList from '~/pages/skus/list.vue'
 import LevelList from '~/pages/level/list.vue'
+import ApiList from '~/pages/api/list.vue'
+import RecordList from '~/pages/record/list.vue'
+import Distribution from '~/pages/distribution/index.vue'
+import SystemInfo from '~/pages/system/list.vue'
 
 
 
@@ -48,11 +53,19 @@ const routers = [{
 //动态路由 用于匹配菜单动态添加路由
 
 const asyncRoutes = [{
-    path:"/",
-    name:"/",
+    path:"/dashboard",
+    name:"/dashboard",
     component:Index,
     meta:{
         title:"后台首页"
+    }
+},
+{
+    path:"/api",
+    name:"/api",
+    component:ApiList,
+    meta:{
+        title:"API管理"
     }
 },{
     path:"/goods/list",
@@ -125,13 +138,14 @@ const asyncRoutes = [{
         title:"管理员管理"
     }
 },{
-    path:"/access/list",
-    name:"/access/list",
-    component:AccessList,
+    path:"/menu/list",
+    name:"/menu/list",
+    component:MenuList,
     meta:{
         title:"菜单权限管理"
     }
-},{
+},
+{
     path:"/role/list",
     name:"/role/list",
     component:RoleList,
@@ -152,10 +166,31 @@ const asyncRoutes = [{
     meta:{
         title:"会员等级"
     }
+},{
+    path:"/record/list",
+    name:"/record/list",
+    component:RecordList,
+    meta:{
+        title:"操作历史"
+    }
+},{
+    path:"/distribution/index",
+    name:"/distribution/index",
+    component:Distribution,
+    meta:{
+        title:"分销管理"
+    }
+},{
+    path:"/system_info/list",
+    name:"/system_info/list",
+    component:SystemInfo,
+    meta:{
+        title:"服务器信息"
+    }
 }]
 
 export const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes: routers
 })
 
@@ -168,15 +203,16 @@ export function addRoutes(menus){
     let hasNewRouters= false
     const findAndAddRoutesByMenus = (arr) =>{
         arr.forEach(e => {
-            //console.log(e.frontpath)
+            //console.log(e.front_path)
             //e.fromtpath
-            let item= asyncRoutes.find(o=>o.path == e.frontpath)
+            let item= asyncRoutes.find(o=>o.path == e.front_path)
+            //console.log(item)
             if (item && !router.hasRoute(item.path)){
                 router.addRoute('admin',item)
                 hasNewRouters =true
             }
-            if(e.child && e.child.length >0){
-                findAndAddRoutesByMenus(e.child)
+            if(e.children && e.children.length >0){
+                findAndAddRoutesByMenus(e.children)
             }
         })
     }

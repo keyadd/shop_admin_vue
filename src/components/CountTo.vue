@@ -20,7 +20,6 @@ const d= reactive({
     num:0
 })
  function AnimateToValue(){
-    //console.log(props.value);
     gsap.to(d,{
         duration:0.5,
         num:props.value

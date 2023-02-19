@@ -2,21 +2,24 @@ import axios from "~/axios";
 
 
 export function getCouponList(page){
-    return axios.get(`/admin/coupon/${page}`)
+    const data = {"page":page,"page_size":10}
+    return axios.post(`/coupon/list`,data)
 }
 
 export function createCoupon(data){
-    return axios.post(`/admin/coupon`,data)
+    return axios.post(`/coupon/create`,data)
 }
 
 export function updateCoupon(id,data){
-    return axios.post(`/admin/coupon/`+id,data)
+    return axios.post(`/coupon/edit`+id,data)
 }
 export function deleteCoupon(id){
-    return axios.post(`/admin/coupon/${id}/delete`)
+    const data = {"id":id}
+    return axios.post(`/coupon/delete`,data)
 }
 
 export function updateCouponStatus(id){
-    return axios.post(`/admin/coupon/${id}/update_status`,{status:0})
+    const data = {"id":id,"status":String(0)}
+    return axios.post(`/coupon/update_status`,data)
 
 }

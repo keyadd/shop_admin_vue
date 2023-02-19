@@ -87,8 +87,8 @@ function getData() {
     //option && 
     myChart.showLoading()
     getStatistics3(current.value).then(res=>{
-        option.xAxis.data = res.x
-        option.series[0].data = res.y
+        option.xAxis.data = res.list.x
+        option.series[0].data = res.list.y
         myChart.setOption(option)
     }).finally(()=>{
         myChart.hideLoading()

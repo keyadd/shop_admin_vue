@@ -2,7 +2,7 @@
     <div>
         <el-row :gutter="20">
 
-            <template v-if="panels.length ==0">
+            <template v-if="list.length ==0">
                 <el-col :span="6" v-for="i in 4" :key="i">
                     <el-skeleton style="width: 100%" animated loading>
                         <template #template>
@@ -36,15 +36,13 @@
             </template>
 
 
-
-
-            <el-col :span="6" :offset="0" v-for="(item, index) in panels" :key="index">
+            <el-col :span="6" :offset="0" v-for="(item, index) in list" :key="index">
                 <el-card shadow="hover" class="border-0">
                     <template #header>
                         <div class="flex justify-between">
                             <span class="text-sm">{{ item.title }}</span>
 
-                            <el-tag :type="item.unitColor" effect="plain">
+                            <el-tag :type="item.unit_color" effect="plain">
                                 {{ item.unit }}
                             </el-tag>
                         </div>
@@ -55,8 +53,8 @@
                     </span>
                     <el-divider></el-divider>
                     <div class="flex justify-between text-sm text-gray-600">
-                        <span>{{ item.subTitle }}</span>
-                        <span>{{ item.subValue }}</span>
+                        <span>{{ item.sub_title }}</span>
+                        <span>{{ item.sub_value }}</span>
                     </div>
                 </el-card>
 
@@ -90,10 +88,10 @@ import IndexChart from "~/components/IndexChart.vue";
 import IndexCard from "~/components/IndexCard.vue";
 
 
-const panels = ref([])
+const list = ref([])
 
 getStatistics1().then((res) => {
-    panels.value = res.panels
+    list.value = res.list
     //console.log(panels.value);
 });
 
@@ -101,8 +99,8 @@ const goods= ref([])
 const order= ref([])
 
 getStatistics2().then((res) => {
-    goods.value =res.goods
-    order.value =res.order
+    goods.value =res.list.goods
+    order.value =res.list.order
 });
 
 </script>

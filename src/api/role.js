@@ -2,26 +2,30 @@ import axios from "~/axios";
 
 
 export function getRoleList(page){
-    return axios.get(`/admin/role/${page}`)
+    const data = {"page":page,"page_size":10}
+    return axios.post(`/role/list`,data)
 }
 
 export function createRole(data){
-    return axios.post(`/admin/role`,data)
+    return axios.post(`/role/create`,data)
 }
 
 export function updateRole(id,data){
     return axios.post(`/admin/role/`+id,data)
 }
 export function deleteRole(id){
-    return axios.post(`/admin/role/${id}/delete`)
+    const data = {"id":id}
+    return axios.post(`/role/delete`,data)
 }
 
 
 export function updateRoleStatus(id,status){
-    return axios.post(`/admin/role/${id}/update_status`,{status})
+    const data = {"id":id,"status":String(status)}
+    return axios.post(`/role/update_status`,data)
 
 }
 
-export function setRoleRules(id,rule_ids){
-    return axios.post(`/admin/role/set_rules`,{id,rule_ids})
+export function setRoleRules(role_id,rule_ids){
+    const data = {"role_id":role_id,"rule_ids":rule_ids}
+    return axios.post(`/role/set_rules`,data)
 }

@@ -5,8 +5,8 @@ import {queryParams} from "~/common/util"
 
 //获取管理员接口
 export function getGoodsCommentList(page,query ={}){
-    let r =queryParams(query) 
-    return axios.get(`/admin/goods_comment/${page}${r}`)
+    const data = {"page":page,"page_size":10}
+    return axios.post(`/goods_comment/list`,data)
 
 }
 

@@ -10,6 +10,16 @@ https://mallweb.acorn.eu.org/login
 
 默认用户名密码 admin admin
 
+
+开发环境配置
+.env.development
+
+生产环节配置
+.env.production
+
+golang +mysql +redis 后端地址 https://github.com/keyadd/web_app.git
+
+
 项目展示图片
 ![Screenshot 2023-02-19 at 17.31.22.png](demo_image%2FScreenshot%202023-02-19%20at%2017.31.22.png)
 ![Screenshot 2023-02-19 at 17.30.36.png](demo_image%2FScreenshot%202023-02-19%20at%2017.30.36.png)

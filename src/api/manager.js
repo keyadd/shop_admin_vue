@@ -35,7 +35,7 @@ export function updatepassword(form){
 export function getManagerList(page,searchForm){
    // let r =queryParams(query) 
    const data = {"page":page,"page_size":10,"keyword":searchForm.keyword}
-    return axios.post(`/manager/list/`,data)
+    return axios.post(`/manager/list`,data)
 
 }
 
